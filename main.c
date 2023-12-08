@@ -31,16 +31,7 @@ int show_common_option(struct shiru_options* opts) {
         exit(0);
     }
     return 0;
-}
-
-const char* synosis = \
-"\
-shirusu  [-i | --init]\n\
-        [-l | --list]\n\
-        [-m <message>| --message <message>] [-n <note_name> | --name <note_name>]\n\
-        [-h | --help] [--version]\
-";
-
+};
 
 static struct option long_options[] = {
     {"version", no_argument, 0, 'v'},
@@ -91,14 +82,13 @@ int parse_options(int argc, const char** argv, struct shiru_options* opts) {
         opts->options.o_main = shiru_main_opts;
         break;
     }
-    optind +=1;
     case SHIRU_SUB_INIT: {
-        shiru_create_parse(argc, argv + 1);
+        shiru_create_parse(argc, argv);
         opts->options.o_create = shiru_create_opts;
         break;
     }
     case SHIRU_SUB_LIST: {
-        shiru_list_parse(argc, argv + 1);
+        shiru_list_parse(argc, argv);
         opts->options.o_list = shiru_list_opts;
         break;
     }
@@ -112,7 +102,7 @@ int main_exec(struct shiru_options* opts) {
     case SHIRU_NO_SUB:
         return shiru_main_exec(&opts->options.o_main);
     case SHIRU_SUB_INIT:
-        return 0;
+        return shiru_create_exec(&opts->options.o_create);
     case SHIRU_SUB_LIST:
         return 0;
     }
