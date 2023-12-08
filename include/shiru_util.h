@@ -19,9 +19,9 @@
 #define __SHIRUSU_UTIL_H__
 
 #ifdef _WIN32
-const char SEPARATOR = '\\';
+const char FILE_SEPARATOR = '\\';
 #else
-const char SEPARATOR = '/';
+const char FILE_SEPARATOR = '/';
 #endif
 
 #endif

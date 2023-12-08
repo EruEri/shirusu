@@ -85,24 +85,6 @@ Commands:\n\
     return 0;  
 }
 
-int shiru_create_home_directory(const char* xdg) {
-    const char* format = "%s%c%s";
-    size_t length = snprintf(NULL, 0, format, xdg, SEPARATOR, SHIRUSU_NAME);
-    char* dirname = malloc(length + 1);
-    if (dirname == NULL) {
-        perror("allocated dirname");
-        return EXIT_FAILURE;
-    }
-    sprintf(dirname, format, xdg, SEPARATOR, SHIRUSU_NAME);
-    int status = mkdir((const char*) dirname, 0777);
-    if (status != 0) {
-        perror(errno == EEXIST ? "directory already exist" : "");
-        return EXIT_FAILURE;
-    }
-
-    return EXIT_SUCCESS;
-}
-
 int shiru_main_exec(const struct shiru_main* opts) {
     if (opts->help) {
         shiru_main_help();
