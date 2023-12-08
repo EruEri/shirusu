@@ -32,7 +32,7 @@ int shiru_main_parse(int argc, const char** argv) {
             shiru_main_opts.name = optarg;
             break;
         case '?':
-            fprintf(stderr, "Unknwon option: %s\n", optarg);
+            status = 1;
             break;
         }
     }
