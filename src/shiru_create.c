@@ -114,10 +114,10 @@ int shiru_create_exec(const struct shiru_create * opts) {
     }
 
     const char* root = xdg_home_dir();
-    printf("root = %s\n", root);
     if (!root) { return EXIT_FAILURE; }
     
     int status = shiru_create_home_directory(root);
+    free((void *) root);
     return status;
 }
 
