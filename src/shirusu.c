@@ -3,10 +3,10 @@
 #include <stdbool.h>
 #include <getopt.h>
 #include <string.h>
-#include "shiru_create.h"
-#include "shiru_list.h"
-#include "shiru_main.h"
-#include "shiru_misc.h"
+#include "../include/shiru_create.h"
+#include "../include/shiru_list.h"
+#include "../include/shiru_main.h"
+#include "../include/shiru_misc.h"
 
 
 enum shiru_subcommand {

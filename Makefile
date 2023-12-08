@@ -1,13 +1,12 @@
-OBJECT_SRC=$(foreach file, $(shell ls *.c), $(shell basename $(file) .c ).o )
-FLAGS=--std=c99 -O2 -Wall
-
+OBJECT_SRC=$(foreach file, $(shell ls src/*.c), src/$(shell basename $(file) .c ).o )
+FLAGS=-std=c99 -O2 -Wall
+CC=cc
 
 shiruku: $(OBJECT_SRC)
-	cc $(FLAGS) -o $@ $^
+	$(CC) $(FLAGS) -o $@ $^
 
-
-%.o: %.c
-	cc $(FLAGS) -c $<
+src/%.o: src/%.c
+	$(CC) $(FLAGS) -c -o $@ $<
 
 clean:
 	find . -type f -name "shiruku" -delete

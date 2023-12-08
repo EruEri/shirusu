@@ -1,4 +1,4 @@
-#include "shiru_create.h"
+#include "../include/shiru_create.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdbool.h>
@@ -34,10 +34,26 @@ int shiru_create_parse(int argc, const char** argv) {
 
 int shiru_create_exec(const struct shiru_create * opts) {
     if (opts->help) {
-        printf("Help\n");
+        shiru_create_help();
         return 0;
     }
     return 0;
+}
+
+
+int shiru_create_help(void) {
+      printf("\
+Usage:\n\
+    shirusu init - Initialiaze shirusu\n\n\
+    shirusu init [OPTIONS]... \n\
+Description:\n\
+    Initialiaze shirusu by creating a directory in the $XDG_DATA_HOME directory\n\
+Options:\n\
+    -h, --help             Show help\n\
+        --version          Show version\n\
+"
+);
+    return 0;  
 }
 
 

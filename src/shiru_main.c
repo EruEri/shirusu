@@ -1,9 +1,14 @@
-#include "shiru_main.h"
+#include "../include/shiru_main.h"
+#include "../include/shiru_misc.h"
+#include "../include/shiru_util.h"
 #include "stdlib.h"
+#include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 
 struct shiru_main shiru_main_opts = {
     .message = NULL,
@@ -47,8 +52,9 @@ int shiru_main_parse(int argc, const char** argv) {
 int shiru_main_help(void) {
       printf("\
 Usage:\n\
-    shiruku : A simple fast thought note taker\n\n\
-    shiruku [COMMAND] [OPTIONS]... \n\
+    shirusu - A simple fast thought note taker\n\n\
+    shirusu [COMMAND] [OPTIONS]... \n\
+    shirusu [-n <name> | --name <name>] [-m <message> | --message <message>]\n\
 Options:\n\
     -n, --name=NAME        Name of the new note\n\
     -m, --message=MESSAGE  Content of the note\n\
@@ -62,11 +68,29 @@ Commands:\n\
     return 0;  
 }
 
+int shiru_create_home_directory(const char* xdg) {
+    const char* format = "%s%c%s";
+    size_t length = snprintf(NULL, 0, format, xdg, SEPARATOR, SHIRUSU_NAME);
+    char* dirname = malloc(length + 1);
+    if (dirname == NULL) {
+        perror("allocated dirname");
+        return EXIT_FAILURE;
+    }
+    sprintf(dirname, format, xdg, SEPARATOR, SHIRUSU_NAME);
+    int status = mkdir((const char*) dirname, 0777);
+    if (status != 0) {
+        perror(errno == EEXIST ? "directory already exist" : "");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int shiru_main_exec(const struct shiru_main* opts) {
     if (opts->help) {
         shiru_main_help();
         return 0;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
