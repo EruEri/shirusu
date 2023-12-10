@@ -143,7 +143,7 @@ const char* shiru_timestamp(void) {
     ) + 1;
     char* timestamp = malloc(length);
     if (timestamp == NULL) {
-        perror("Timestamp allocation: ");
+        perror("Timestamp allocation");
         return NULL;
     }
     snprintf(
