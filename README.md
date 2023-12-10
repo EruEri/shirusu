@@ -2,8 +2,8 @@
 
 A simple program that store notes.
 
-All your notes live in your ``$XDG_DATA_HOME/shirusu``` directory which will
-probably be ``~/.local/share/shirusu```
+All your notes live in your ```$XDG_DATA_HOME/shirusu``` directory which will
+probably be ```~/.local/share/shirusu```
 
 ## Initialization
 
