@@ -23,8 +23,11 @@ extern const char*const AUTHOR;
 extern const char*const usage;
 extern const char*const help;
 extern const char*const SHIRUSU_NAME;
+extern const char*const ENV_XDG_DATA_HOME;
 
 int show_version(void);
 
+const char* shirusu_home(void);
 
+const char* xdg_home_dir();
 #endif

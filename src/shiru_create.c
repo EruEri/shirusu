@@ -20,16 +20,12 @@
 #include "../include/shiru_misc.h"
 #include <sys/stat.h>
 #include <stdbool.h>
-#include <unistd.h>
 #include <getopt.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
 #include <pwd.h>
-
-
-
 
 static struct option long_options[] = {
     {"help", no_argument, 0, 'h'},
@@ -59,35 +55,6 @@ int shiru_create_home_directory(const char* xdg) {
     return EXIT_SUCCESS;
 }
 
-
-const char* xdg_home_dir() {
-    const char* env = getenv(ENV_XDG_DATA_HOME);
-
-    if (env != NULL) {
-        const char* root = NULL;
-        size_t length = strlen(env) + 1;
-        root = malloc(length);
-        if (root == NULL) {
-            perror("XDG_DATA_HOME copy");
-            return NULL;
-        }
-        memcpy((void *) root, env, length);
-        return root;
-    } else {
-        struct passwd *pw = getpwuid(getuid());
-        const char* home_dir = pw->pw_dir;
-        const char* format = "%s%c.local%cshare%c";
-        size_t length = snprintf(NULL, 0, format, 
-            home_dir, FILE_SEPARATOR, FILE_SEPARATOR, FILE_SEPARATOR
-        ) + 1;
-        char* root = malloc(length);
-        if (root == NULL) { return NULL; }
-        snprintf(root, length, format, 
-            home_dir, FILE_SEPARATOR, FILE_SEPARATOR
-        );
-        return root;
-    }
-}
 
 int shiru_create_parse(int argc, const char** argv) {
     while (true) {

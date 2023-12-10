@@ -31,6 +31,4 @@ int shiru_create_parse(int argc, const char** argv);
 int shiru_create_help(void);
 int shiru_create_exec(const struct shiru_create*);
 
-#define ENV_XDG_DATA_HOME "XDG_DATA_HOME"
-
 #endif
