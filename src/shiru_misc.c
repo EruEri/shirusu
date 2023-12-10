@@ -67,32 +67,44 @@ const char* xdg_home_dir() {
 
 const char* shirusu_home(void) {
     const char* xdg_home = xdg_home_dir();
-    if (xdg_home == NULL) { return NULL;}
+    const char* shirusu_h = NULL;
+    if (xdg_home == NULL) { 
+        perror(NULL);
+        goto dealloc;
+    }
     const char* format = "%s%c%s%c";
     size_t length = snprintf(NULL, 0, format, xdg_home, FILE_SEPARATOR, SHIRUSU_NAME, FILE_SEPARATOR) + 1;
-    const char* shirusu_h = malloc(length);
+    shirusu_h = malloc(length);
     if (shirusu_h == NULL) {
         perror(NULL);
-        return NULL;
+        goto dealloc;
     }
 
     snprintf((char*) shirusu_h, length, format, xdg_home, FILE_SEPARATOR, SHIRUSU_NAME, FILE_SEPARATOR);
-
+    
+dealloc:
+    free((void*) xdg_home);
     return shirusu_h;
 }
 
 const char* shirusu_home_file(const char* file) {
     const char* shiru_home = shirusu_home();
-    if (shiru_home == NULL) { return NULL; }
+    char* shiru_file = NULL;
+    if (shiru_home == NULL) { 
+        perror(NULL);
+        goto dealloc;
+    }
     const char* format = "%s%s";
     size_t length = snprintf(NULL, 0, format, shiru_home, file) + 1;
-    char* shiru_file = malloc(length);
+    shiru_file = malloc(length);
     if (shiru_file == NULL) {
         perror(NULL);
-        return NULL;
+        goto dealloc;
     }
-
     snprintf(shiru_file, length, format, shiru_home, file);
+    
+dealloc:
+    free((void*) shiru_home);
     return shiru_file;
 }
 
@@ -100,7 +112,9 @@ const char* shirusu_home_file(const char* file) {
 bool is_shirusu_initialized(void) {
     const char* shirusu = shirusu_home();
     if (shirusu == NULL) return false;
-    return access(shirusu, F_OK) == 0;
+    bool res = access(shirusu, F_OK) == 0;
+    free((void*) shirusu);
+    return res;
 }
 
 
