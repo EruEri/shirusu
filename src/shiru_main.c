@@ -18,7 +18,6 @@
 #include "../include/shiru_main.h"
 #include "../include/shiru_misc.h"
 #include "../include/shiru_util.h"
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

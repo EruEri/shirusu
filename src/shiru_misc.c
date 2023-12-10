@@ -77,7 +77,7 @@ const char* xdg_home_dir() {
         char* root = malloc(length);
         if (root == NULL) { return NULL; }
         snprintf(root, length, format, 
-            home_dir, FILE_SEPARATOR, FILE_SEPARATOR
+            home_dir, FILE_SEPARATOR, FILE_SEPARATOR, FILE_SEPARATOR
         );
         return root;
     }
