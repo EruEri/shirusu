@@ -109,7 +109,7 @@ int shiru_delege_editor(const char* path) {
 
 int shiru_main_run(const struct shiru_main* opts) {
     const char* message = opts->message;
-    const char* name = opts->message;
+    const char* name = opts->name;
     bool is_filename_allocated = false;
     const char* full_path_file = NULL;
     const char* filename = name;
