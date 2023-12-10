@@ -41,6 +41,14 @@ const char* SHIRUSU_EDITORS[] = {
 
 const size_t SHIRUSU_EDITORS_COUNT = sizeof(SHIRUSU_EDITORS) / sizeof(const char*);
 
+const char* SHIRUSU_IGNORE_FILES[] = {
+    ".",
+    "..",
+    ".DS_Store"
+};
+
+const size_t SHIRUSU_IGNORE_FILES_COUNT = sizeof(SHIRUSU_IGNORE_FILES) / sizeof(const char*);
+
 int show_version() {
     fprintf(stdout, "%s\n", VERSION);
     exit(0);

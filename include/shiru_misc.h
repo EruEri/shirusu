@@ -28,6 +28,8 @@ extern const char*const help;
 extern const char*const SHIRUSU_NAME;
 extern const char* SHIRUSU_EDITORS[];
 extern const size_t SHIRUSU_EDITORS_COUNT;
+extern const char* SHIRUSU_IGNORE_FILES[];
+extern const size_t SHIRUSU_IGNORE_FILES_COUNT;
 
 int show_version(void);
 bool is_shirusu_initialized(void);

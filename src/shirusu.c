@@ -121,7 +121,7 @@ int main_exec(struct shiru_options* opts) {
     case SHIRU_SUB_INIT:
         return shiru_create_exec(&opts->options.o_create);
     case SHIRU_SUB_LIST:
-        return 0;
+        return shiru_list_exec(&opts->options.o_list);
     }
 
     return 0;

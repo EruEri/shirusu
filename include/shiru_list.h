@@ -19,11 +19,15 @@
 #define __SHIRUSU_LIST_H__
 
 
-struct shiru_list {};
+struct shiru_list {
+    bool help;
+};
 
 extern struct shiru_list shiru_list_opts;
 
+int shiru_list_exec(const struct shiru_list* opts);
 int shiru_list_parse(int, const char**);
+int shiru_list_help(void);
 
 
 #endif
