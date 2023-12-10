@@ -25,6 +25,7 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 
 struct shiru_main shiru_main_opts = {
     .message = NULL,
