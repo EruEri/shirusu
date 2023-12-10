@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                            //
-// This file is part of Shiruku : A little note taker                                         //
+// This file is part of Shirusu : A little note taker                                         //
 // Copyright (C) 2023 Yves Ndiaye                                                             //
 //                                                                                            //
-// Shiruku is free software: you can redistribute it and/or modify it under the terms         //
+// Shirusu is free software: you can redistribute it and/or modify it under the terms         //
 // of the GNU General Public License as published by the Free Software Foundation,            //
 // either version 3 of the License, or (at your option) any later version.                    //
 //                                                                                            //
-// Shiruku is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;       //
+// Shirusu is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;       //
 // without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR           //
 // PURPOSE.  See the GNU General Public License for more details.                             //
-// You should have received a copy of the GNU General Public License along with Shiruku.      //
+// You should have received a copy of the GNU General Public License along with Shirusu.      //
 // If not, see <http://www.gnu.org/licenses/>.                                                //
 //                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,6 @@
 #include "../include/shiru_main.h"
 #include "../include/shiru_misc.h"
 #include "../include/shiru_util.h"
-#include "stdlib.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -85,11 +84,87 @@ Commands:\n\
     return 0;  
 }
 
+int shiru_delege_editor(const char* path) {
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        perror("Cannot start editor");
+        return EXIT_SUCCESS;
+    }
+
+    if (pid == 0) {
+        const char* editor = getenv("EDITOR");
+        if (!editor) {
+            editor = "hx";
+        }
+        // child pid;
+        return execlp(editor, editor, path, (void*) 0);
+    } else {
+        // parent
+        int status = 0;
+        wait(&status);
+        return status;
+    }
+}
+
+int shiru_main_run(const struct shiru_main* opts) {
+    const char* message = opts->message;
+    const char* name = opts->message;
+    bool is_filename_allocated = false;
+    const char* full_path_file = NULL;
+    const char* filename = name;
+    int status = EXIT_SUCCESS;
+    if (filename == NULL) {
+        is_filename_allocated = true;
+        filename = shiru_timestamp();
+        if (filename == NULL) {
+            return EXIT_FAILURE;
+        }
+    }
+
+    full_path_file = shirusu_home_file(filename);
+    if (!full_path_file) {
+        status = EXIT_FAILURE;
+        goto deinit;
+    }
+
+    FILE* file = fopen(full_path_file, "wa");
+    if (file == NULL) {
+        perror("file error");
+        status = EXIT_FAILURE;
+        goto deinit;
+    }
+
+    if (message) {
+        fprintf(file, "%s\n", message);
+        fclose(file);
+    } else {
+        fclose(file);
+        status = shiru_delege_editor(full_path_file);
+    }
+    
+
+deinit:
+    
+    if (is_filename_allocated) {
+        free((void *) filename);
+    }
+    free((void *) full_path_file);
+    return status;
+}
+
+
+
 int shiru_main_exec(const struct shiru_main* opts) {
     if (opts->help) {
         shiru_main_help();
-        return 0;
+        return EXIT_SUCCESS;
     }
 
-    return EXIT_SUCCESS;
+    if (!is_shirusu_initialized()) {
+        fprintf(stderr, "%s not initialized. Please run:\n%s init\n", SHIRUSU_NAME, SHIRUSU_NAME);
+        return EXIT_FAILURE;
+    }
+    
+    return shiru_main_run(opts);
 }
