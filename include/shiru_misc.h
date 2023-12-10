@@ -19,13 +19,15 @@
 #define __SHIRUSU_MISC_H__
 
 #include <stdbool.h>
+#include <stddef.h>
 
 extern const char*const VERSION;
 extern const char*const AUTHOR;
 extern const char*const usage;
 extern const char*const help;
 extern const char*const SHIRUSU_NAME;
-extern const char*const ENV_XDG_DATA_HOME;
+extern const char* SHIRUSU_EDITORS[];
+extern const size_t SHIRUSU_EDITORS_COUNT;
 
 int show_version(void);
 bool is_shirusu_initialized(void);

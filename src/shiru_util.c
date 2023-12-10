@@ -23,3 +23,8 @@ const char FILE_SEPARATOR = '\\';
 const char FILE_SEPARATOR = '/';
 #endif
 
+
+const char* ENV_XDG_DATA_HOME = "XDG_DATA_HOME";
+
+const char* ENV_EDITOR = "EDITOR";
+const char* ENV_SHIRUSU_EDITOR = "SHIRUSU_EDITOR";

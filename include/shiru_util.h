@@ -19,5 +19,8 @@
 #define __SHIRUSU_UTIL_H__
 
 extern const char FILE_SEPARATOR;
+extern const char* ENV_XDG_DATA_HOME;
+extern const char* ENV_EDITOR;
+extern const char* ENV_SHIRUSU_EDITOR;
 #endif
 

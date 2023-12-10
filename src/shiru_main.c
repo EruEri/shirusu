@@ -66,25 +66,6 @@ int shiru_main_parse(int argc, const char** argv) {
     return status;
 }
 
-int shiru_main_help(void) {
-      printf("\
-Usage:\n\
-    shirusu - A simple fast thought note taker\n\n\
-    shirusu [COMMAND] [OPTIONS]... \n\
-    shirusu [-n <name> | --name <name>] [-m <message> | --message <message>]\n\
-Options:\n\
-    -n, --name=NAME        Name of the new note\n\
-    -m, --message=MESSAGE  Content of the note\n\
-    -h, --help             Show help\n\
-        --version          Show version\n\
-Commands:\n\
-    init                   Initialiaze init\n\
-    list                   List notes\n\
-"
-);
-    return 0;  
-}
-
 int shiru_delege_editor(const char* path) {
     pid_t pid = fork();
 
@@ -94,12 +75,23 @@ int shiru_delege_editor(const char* path) {
     }
 
     if (pid == 0) {
-        const char* editor = getenv("EDITOR");
-        if (!editor) {
-            editor = "hx";
+        const char* shirusu_editor = getenv(ENV_SHIRUSU_EDITOR);
+        if (shirusu_editor) {
+            execlp(shirusu_editor, shirusu_editor, path, (void*) 0);
+            perror("$SHIRUSU_EDITOR");
         }
-        // child pid;
-        return execlp(editor, editor, path, (void*) 0);
+        const char* editor = getenv(ENV_EDITOR);
+        if (editor) {
+            execlp(editor, editor, path, (void*) 0);
+            perror("$EDITOR");
+        }
+
+        for (size_t i = 0; i < SHIRUSU_EDITORS_COUNT; i+= 1) {
+            const char* ed = SHIRUSU_EDITORS[i];
+            execlp(ed, ed, path, (void*) 0);
+        }
+        fprintf(stderr, "No editor found\n");
+        return EXIT_FAILURE;
     } else {
         // parent
         int status = 0;
@@ -143,7 +135,6 @@ int shiru_main_run(const struct shiru_main* opts) {
         fclose(file);
         status = shiru_delege_editor(full_path_file);
     }
-    
 
 deinit:
     
@@ -163,9 +154,31 @@ int shiru_main_exec(const struct shiru_main* opts) {
     }
 
     if (!is_shirusu_initialized()) {
-        fprintf(stderr, "%s not initialized. Please run:\n%s init\n", SHIRUSU_NAME, SHIRUSU_NAME);
+        fprintf(stderr, "%s not initialized. Please run:\n  %s init\n", SHIRUSU_NAME, SHIRUSU_NAME);
         return EXIT_FAILURE;
     }
     
     return shiru_main_run(opts);
+}
+
+int shiru_main_help(void) {
+      printf("\
+Usage:\n\
+    shirusu - A simple fast thought note taker\n\n\
+    shirusu [COMMAND] [OPTIONS]... \n\
+    shirusu [-n <name> | --name <name>] [-m <message> | --message <message>]\n\
+Options:\n\
+    -n, --name=NAME        Name of the new note\n\
+    -m, --message=MESSAGE  Content of the note\n\
+    -h, --help             Show help\n\
+        --version          Show version\n\
+Commands:\n\
+    init                   Initialiaze init\n\
+    list                   List notes\n\
+Environment:\n\
+    SHIRUSU_EDITOR         Try to open note with if define\n\
+    EDITOR                 Try to open note with if SHIRUSU_EDITOR isn't define\n\
+"
+);
+    return 0;  
 }

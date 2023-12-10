@@ -25,11 +25,21 @@
 #include "../include/shiru_util.h"
 
 static const int year_start = 1900;
-const char*const ENV_XDG_DATA_HOME = "XDG_DATA_HOME";
 const char*const SHIRUSU_NAME = "shirusu";
 const char*const VERSION = "0.1.0";
 const char*const AUTHOR = "Yves Ndiaye";
 const char*const usage = "usage: shirusu [COMMAND] ...";
+
+// sorted in alphabetic order and NOTHING MORE!!!
+const char* SHIRUSU_EDITORS[] = {
+    "ee",
+    "emacs",
+    "nano",
+    "vi",
+    "vim"
+};
+
+const size_t SHIRUSU_EDITORS_COUNT = sizeof(SHIRUSU_EDITORS) / sizeof(const char*);
 
 int show_version() {
     fprintf(stdout, "%s\n", VERSION);
@@ -44,7 +54,7 @@ const char* xdg_home_dir() {
         size_t length = strlen(env) + 1;
         root = malloc(length);
         if (root == NULL) {
-            perror("XDG_DATA_HOME copy");
+            perror("XDG_DATA_HOME allocation");
             return NULL;
         }
         memcpy((void *) root, env, length);
