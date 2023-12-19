@@ -59,6 +59,6 @@ You need:
 - C compiler compliant c99
 - GNU make
 - probably an Unix/Unix-lite system (MacOS / Linux / FreeBSD / ...):
-    - I don't know if it's will work on Windows
+    - I don't know if it will work on Windows
     
 

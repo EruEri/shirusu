@@ -22,6 +22,7 @@
 
 struct shiru_main {
     const char* name;
+    const char* exist_name;
     const char* message;
     bool help;
 };

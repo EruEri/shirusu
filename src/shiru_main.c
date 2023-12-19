@@ -29,6 +29,7 @@
 struct shiru_main shiru_main_opts = {
     .message = NULL,
     .name = NULL,
+    .exist_name = NULL,
     .help = false,
 };
 
@@ -39,13 +40,16 @@ static struct option long_options[] = {
     {0, 0, 0, 0}
 };
 
+static const char* shiru_main_usage = \
+"shirusu [-n <name> | --name <name> | -x <name> ] [-m <message> | --message <message>]";
+
 
 int shiru_main_parse(int argc, const char** argv) {
     int status = 0;
     while (true) {
         int option_index = 0;
         int res = getopt_long(
-            argc, (char*const*) argv, "hm:n:", long_options, &option_index);
+            argc, (char*const*) argv, "hm:x:n:", long_options, &option_index);
         if (res == -1) break;
         switch (res) {
         case 'm':
@@ -56,6 +60,9 @@ int shiru_main_parse(int argc, const char** argv) {
             break;
         case 'h':
             shiru_main_opts.help = true;
+            break;
+        case 'x':
+            shiru_main_opts.exist_name = optarg;
             break;
         case '?':
             status = 1;
@@ -120,7 +127,7 @@ int shiru_main_run(const struct shiru_main* opts) {
         goto deinit;
     }
 
-    FILE* file = fopen(full_path_file, "wa");
+    FILE* file = fopen(full_path_file, "a+");
     if (file == NULL) {
         perror("file error");
         status = EXIT_FAILURE;
@@ -145,11 +152,26 @@ deinit:
 }
 
 
+static bool shiru_main_validate(const struct shiru_main* opts) {
+    if (opts->name && opts->exist_name) {
+        fprintf(stderr, "Args conflict : --name can't be used with -x\n");
+        fprintf(stderr, "usage : %s\n", shiru_main_usage);
+        return false;
+    }
+
+    return true;
+}
+
+
 
 int shiru_main_exec(const struct shiru_main* opts) {
     if (opts->help) {
         shiru_main_help();
         return EXIT_SUCCESS;
+    }
+
+    if (!shiru_main_validate(opts)) {
+        return EXIT_FAILURE;
     }
 
     if (!is_shirusu_initialized()) {
@@ -165,16 +187,17 @@ int shiru_main_help(void) {
 Usage:\n\
     shirusu - A simple fast thought note taker\n\n\
     shirusu [COMMAND] [OPTIONS]... \n\
-    shirusu [-n <name> | --name <name>] [-m <message> | --message <message>]\n\
+    shirusu [-n <name> | --name <name> | -x <name> ] [-m <message> | --message <message>]\n\
 Options:\n\
     -n, --name=NAME        Name of the new note\n\
+    -x,       =NAME        Name of the existing note\n\
     -m, --message=MESSAGE  Content of the note\n\
     -h, --help             Show help\n\
         --version          Show version\n\
 Commands:\n\
     init                   Initialiaze init\n\
     list                   List notes\n\
-Environment:\n\
+Environments:\n\
     SHIRUSU_EDITOR         Try to open note with if define\n\
     EDITOR                 Try to open note with if SHIRUSU_EDITOR isn't define\n\
 "
