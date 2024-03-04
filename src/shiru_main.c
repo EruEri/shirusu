@@ -113,18 +113,32 @@ int shiru_main_run(const struct shiru_main* opts) {
     const char* full_path_file = NULL;
     const char* filename = name;
     int status = EXIT_SUCCESS;
-    if (filename == NULL) {
+
+    if (opts->name == NULL && opts->exist_name == NULL) {
         is_filename_allocated = true;
         filename = shiru_timestamp();
         if (filename == NULL) {
             return EXIT_FAILURE;
         }
+    } else if (opts->name) {
+        filename = opts->name;
+    } else if (opts->exist_name) {
+        filename = opts->exist_name;
     }
 
     full_path_file = shirusu_home_file(filename);
     if (!full_path_file) {
         status = EXIT_FAILURE;
         goto deinit;
+    }
+
+    if (opts->exist_name) {
+        bool res = access(full_path_file, F_OK) == 0;
+        if (!res) {
+            fprintf(stderr, "note \"%s\" doesnt exist\n", opts->exist_name);
+            status = EXIT_FAILURE;
+            goto deinit;
+        }
     }
 
     FILE* file = fopen(full_path_file, "a+");
