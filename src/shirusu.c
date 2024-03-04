@@ -20,16 +20,18 @@
 #include <stdbool.h>
 #include <getopt.h>
 #include <string.h>
-#include "../include/shiru_create.h"
-#include "../include/shiru_list.h"
-#include "../include/shiru_main.h"
-#include "../include/shiru_misc.h"
+#include "../include/shirusu_create.h"
+#include "../include/shirusu_list.h"
+#include "../include/shirusu_main.h"
+#include "../include/shirusu_misc.h"
+#include "../include/shirusu_cat.h"
 
 
 enum shiru_subcommand {
-    SHIRU_NO_SUB,
-    SHIRU_SUB_INIT,
-    SHIRU_SUB_LIST,
+    SHIRUSU_NO_SUB,
+    SHIRUSU_SUB_INIT,
+    SHIRUSU_SUB_LIST,
+    SHIRUSU_SUB_CAT,
 };
 
 struct shiru_options {
@@ -38,6 +40,7 @@ struct shiru_options {
         struct shiru_create o_create;
         struct shiru_list o_list;
         struct shiru_main o_main;
+        struct shirusu_cat o_cat;
     } options;
     bool version;
 };
@@ -58,11 +61,13 @@ static struct option long_options[] = {
 enum shiru_subcommand parse_subcommand(int argc, const char** argv) {
     const char* first = argv[1];
     if (strcmp(first, "list") == 0) {
-        return SHIRU_SUB_LIST;
+        return SHIRUSU_SUB_LIST;
     } else if (strcmp(first, "init") == 0) {
-        return SHIRU_SUB_INIT;
+        return SHIRUSU_SUB_INIT;
+    } else if (strcmp(first, "cat") == 0) {
+        return SHIRUSU_SUB_CAT;
     } else {
-        return SHIRU_NO_SUB;
+        return SHIRUSU_NO_SUB;
     }
 }
 
@@ -97,21 +102,27 @@ int parse_options(int argc, const char** argv, struct shiru_options* opts) {
     show_common_option(opts);
     int status = EXIT_SUCCESS;
     switch (subcommand) {
-    case SHIRU_NO_SUB: {
-        status = shiru_main_parse(argc, argv);
-        opts->options.o_main = shiru_main_opts;
-        break;
-    }
-    case SHIRU_SUB_INIT: {
-        status = shiru_create_parse(argc, argv);
-        opts->options.o_create = shiru_create_opts;
-        break;
-    }
-    case SHIRU_SUB_LIST: {
-        status = shiru_list_parse(argc, argv);
-        opts->options.o_list = shiru_list_opts;
-        break;
-    }
+        case SHIRUSU_NO_SUB: {
+            status = shiru_main_parse(argc, argv);
+            opts->options.o_main = shiru_main_opts;
+            break;
+        }
+        case SHIRUSU_SUB_INIT: {
+            status = shiru_create_parse(argc, argv);
+            opts->options.o_create = shiru_create_opts;
+            break;
+        }
+        case SHIRUSU_SUB_LIST: {
+            status = shiru_list_parse(argc, argv);
+            opts->options.o_list = shiru_list_opts;
+            break;
+        }
+        case SHIRUSU_SUB_CAT: {
+            optind = 2;
+            status = shirusu_cat_parse(argc, argv);
+            opts->options.o_cat = shirusu_cat_opts;
+            break;
+        }
     };
 
     return status;
@@ -119,12 +130,14 @@ int parse_options(int argc, const char** argv, struct shiru_options* opts) {
 
 int main_exec(struct shiru_options* opts) {
     switch (opts->subcommand) {
-    case SHIRU_NO_SUB:
+    case SHIRUSU_NO_SUB:
         return shiru_main_exec(&opts->options.o_main);
-    case SHIRU_SUB_INIT:
+    case SHIRUSU_SUB_INIT:
         return shiru_create_exec(&opts->options.o_create);
-    case SHIRU_SUB_LIST:
+    case SHIRUSU_SUB_LIST:
         return shiru_list_exec(&opts->options.o_list);
+    case SHIRUSU_SUB_CAT:
+        return shirusu_cat_exec(&opts->options.o_cat);
     }
 
     return 0;

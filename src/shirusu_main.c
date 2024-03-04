@@ -15,9 +15,9 @@
 //                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../include/shiru_main.h"
-#include "../include/shiru_misc.h"
-#include "../include/shiru_util.h"
+#include "../include/shirusu_main.h"
+#include "../include/shirusu_misc.h"
+#include "../include/shirusu_util.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

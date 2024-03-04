@@ -22,8 +22,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../include/shiru_list.h"
-#include "../include/shiru_misc.h"
+#include "../include/shirusu_list.h"
+#include "../include/shirusu_misc.h"
 
 struct shiru_list shiru_list_opts = {
     .help = false

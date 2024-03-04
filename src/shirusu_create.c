@@ -15,9 +15,9 @@
 //                                                                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../include/shiru_create.h"
-#include "../include/shiru_util.h"
-#include "../include/shiru_misc.h"
+#include "../include/shirusu_create.h"
+#include "../include/shirusu_util.h"
+#include "../include/shirusu_misc.h"
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <getopt.h>

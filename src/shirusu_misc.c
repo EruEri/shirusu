@@ -21,8 +21,8 @@
 #include <unistd.h>
 #include <time.h>
 #include <pwd.h>
-#include "../include/shiru_misc.h"
-#include "../include/shiru_util.h"
+#include "../include/shirusu_misc.h"
+#include "../include/shirusu_util.h"
 
 static const int year_start = 1900;
 const char*const SHIRUSU_NAME = "shirusu";
