@@ -36,19 +36,21 @@ in [src/shiru_misc.c](src/shiru_misc.c)
 ``` 
 $ shirusu --help
 Usage:
-    shirusu - A simple fast thought note taker
+    shirusu - A simple quick thought note taker
 
     shirusu [COMMAND] [OPTIONS]...
-    shirusu [-n <name> | --name <name>] [-m <message> | --message <message>]
+    shirusu [-n <name> | --name <name> | -x <name> ] [-m <message> | --message <message>]
 Options:
     -n, --name=NAME        Name of the new note
+    -x,       =NAME        Name of the existing note
     -m, --message=MESSAGE  Content of the note
     -h, --help             Show help
         --version          Show version
 Commands:
     init                   Initialiaze init
     list                   List notes
-Environment:
+    cat                    Print notes
+Environments:
     SHIRUSU_EDITOR         Try to open note with if define
     EDITOR                 Try to open note with if SHIRUSU_EDITOR isn't define
 ```

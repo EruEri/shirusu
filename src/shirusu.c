@@ -89,8 +89,6 @@ int parse_options_common(int argc, const char** argv, bool* version) {
     return 0;
 }
 
-extern int printf(const char *, ...);
-
 int parse_options(int argc, const char** argv, struct shiru_options* opts) {
     if (argc < 2) return 0;
     enum shiru_subcommand subcommand = parse_subcommand(argc, argv);

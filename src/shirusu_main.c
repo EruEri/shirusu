@@ -199,7 +199,7 @@ int shiru_main_exec(const struct shiru_main* opts) {
 int shiru_main_help(void) {
       printf("\
 Usage:\n\
-    shirusu - A simple fast thought note taker\n\n\
+    shirusu - A simple quick thought note taker\n\n\
     shirusu [COMMAND] [OPTIONS]... \n\
     shirusu [-n <name> | --name <name> | -x <name> ] [-m <message> | --message <message>]\n\
 Options:\n\
@@ -211,6 +211,7 @@ Options:\n\
 Commands:\n\
     init                   Initialiaze init\n\
     list                   List notes\n\
+    cat                    Print notes\n\
 Environments:\n\
     SHIRUSU_EDITOR         Try to open note with if define\n\
     EDITOR                 Try to open note with if SHIRUSU_EDITOR isn't define\n\

@@ -97,5 +97,15 @@ int shirusu_cat_exec(const struct shirusu_cat* opts) {
 }
 
 int shirusu_cat_help(void) {
+    printf("\
+Usage:\n\
+    shirusu cat - print notes\n\n\
+    shirusu cat [OPTIONS]... \n\
+Description:\n\
+    Print notes to the standard output\n\
+Options:\n\
+    -h, --help             Show help\n\
+"
+);
     return 0;
 }
